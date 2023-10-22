@@ -1,0 +1,35 @@
+#hdrum-vidget {
+	max-width: 1000px;
+	margin: auto;
+	position: relative;
+}
+.hd-drum {
+	font-size: min(1vh, .96vw, 5px);
+	position: relative;
+}
+.hd-drum>svg {
+	display: block;
+	width: 100em;
+	height: 100em;
+	background: url(images/pantam-800.webp) center/cover;
+	border-radius:50%;
+	box-shadow: 1em 1.5em 2.6em #0006;
+	margin: auto;
+}
+.hd-drum>svg>g {
+	transform: matrix(1.16, 0, 0, 1.16, -34, -30);
+}
+.hd-drum rect {
+	fill: transparent;
+}
+.hd-drum path {
+	stroke: #010203;
+	stroke-width: 1px;
+	filter: invert(0.001) drop-shadow(0px 0 3px #0007) drop-shadow(1px 0 0px #fff9);
+	transition: .3s filter;
+	will-change: filter;
+	mix-blend-mode: luminosity;
+}
+.hd-drum g:hover>path {
+	filter: invert(1) drop-shadow(0px 0 1px #0005) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
+}
