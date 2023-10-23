@@ -47,6 +47,9 @@ function play(note) {
 	$petal.addClass('active')
 }
 
+$('.hd-drum svg').clone().prependTo('.hd-drum')
+ .find('[data-petal]').removeAttr(('data-petal'))
+
 const petals = $('[data-petal]').each((i, el)=>{
 
 	const note = el.dataset.petal
@@ -64,6 +67,7 @@ const petals = $('[data-petal]').each((i, el)=>{
 	$petal.on('pointerdown', e=>{
 
 		e.preventDefault()
+		e.stopPropagation()
 
 		play(note);
 
@@ -83,7 +87,7 @@ const petals = $('[data-petal]').each((i, el)=>{
 
 		el.classList.remove('active')
 
-	});
+	}).on('pointermove', e =>e.preventDefault());
 })
 
 $win.on('pointerup pointercancel', e=>{
