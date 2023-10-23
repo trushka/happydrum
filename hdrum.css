@@ -12,7 +12,7 @@
 	box-shadow: 1em 1.5em 2.6em #0006;
 	background: url(images/pantam-800.webp) center/cover;
 	border-radius:50%;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 .hd-drum>svg {
 	position: absolute;
@@ -25,6 +25,7 @@
 }
 .hd-drum>svg:last-child {
 	filter: blur(1px) drop-shadow(0px 0 1px #4445) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
+	mix-blend-mode: luminosity;
 }
 
 .hd-drum>svg>g {
@@ -38,7 +39,6 @@
 .hd-drum path {
 	stroke: #010203;
 	stroke-width: 1.1px;
-	mix-blend-mode: luminosity;
 }
 .hd-drum g[data-petal] path {
 	stroke: #ffc;
