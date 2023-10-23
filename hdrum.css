@@ -15,21 +15,26 @@
 	border-radius:50%;
 	box-shadow: 1em 1.5em 2.6em #0006;
 	margin: auto;
+	/* pointer-events: fill; */
 }
 .hd-drum>svg>g {
 	transform: matrix(1.16, 0, 0, 1.16, -34, -30);
 }
 .hd-drum rect {
 	fill: transparent;
+	touch-action: none;
 }
 .hd-drum path {
 	stroke: #010203;
-	stroke-width: 1px;
-	filter: invert(0.001) drop-shadow(0px 0 3px #0007) drop-shadow(1px 0 0px #fff9);
+	stroke-width: 1.1px;
+	filter: invert(0.001) drop-shadow(0px 0 3px #5557) drop-shadow(1px 0 0px #fff9);
 	transition: .3s filter;
 	will-change: filter;
 	mix-blend-mode: luminosity;
 }
-.hd-drum g:hover>path {
-	filter: invert(1) drop-shadow(0px 0 1px #0005) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
+.hd-drum g.active>path {
+	filter: invert(1) drop-shadow(0px 0 1px #4445) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
+}
+.hd-drum g.hover>path {
+	filter: invert(.8) drop-shadow(0px 0 1px #4443) drop-shadow(1px 0 3px #fffb) drop-shadow(-1px 0 6px #ffcb) drop-shadow(0px 0 6px #fffb);
 }
