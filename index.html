@@ -12,7 +12,7 @@
 		<script type="module" src="hdrum.js"></script>
 	</head>
 	<body style="background: #fdf6f2;">
-		<div id="hdrum-vidget">
+		<div id="hdrum-vidget" class="hd-vidget">
 			<div class="hd-drum">
 				<svg xmlns="http://www.w3.org/2000/svg" width="484" height="473" fill="none" version="1.1" viewBox="0 0 484 473">
 					<g transform="matrix(1.16 0 0 1.16 -30.3 -29.7)">
@@ -78,6 +78,25 @@
 						</g>
 					</g>
 				</svg>
+			</div>
+			<div class="hd-controls">
+				<button class="hd-rec-play hd-rec"><svg width="51" height="51">
+					<g>
+						<rect x="20.3931" y="10.6997" width="10.5002" height="21.0003" rx="5.25008" fill="#70A8A9"/>
+						<path d="M17.562 26.4503C17.562 28.5935 18.4134 30.649 19.9289 32.1645C21.4444 33.68 23.4998 34.5314 25.6431 34.5314C27.7863 34.5314 29.8417 33.68 31.3572 32.1645C32.8727 30.649 33.7241 28.5935 33.7241 26.4503" stroke="#70A8A9" stroke-width="2.16191" fill="none"/>
+						<path d="M25.6431 35.8906V44.7722" stroke="#70A8A9" stroke-width="2.4382" stroke-linecap="round"/>
+					</g>
+					<rect x="15" y="15" width="21" height="21" rx="5.68914" fill="#70A8A9"/>
+				</svg></button>
+				<div class="hd-player">
+					<button class="hd-rec-play hd-play"><svg width="51" height="51">
+							<g>
+								<path d="M 36.062 22.853 C 38.113 24.03 38.113 26.97 36.062 28.147 L 22.216 36.086 C 20.165 37.262 17.6 35.792 17.6 33.44 L 17.6 17.56 C 17.6 15.208 20.165 13.738 22.216 14.914 L 36.062 22.853 Z" fill="#70A8A9"/>
+							</g>
+							<rect x="15" y="15" width="21" height="21" rx="5.68914" fill="#70A8A9"/>
+					</svg></button>
+					<input type="range">
+				</div>
 			</div>
 		</div>
 	</body>

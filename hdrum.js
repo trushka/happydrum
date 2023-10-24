@@ -12,7 +12,7 @@ const notes=[], volume0 = .6;
 function play(note) {
 	const {$audio, $petal} = notes[note];
 
-	let t0 = performance.now(), started;
+	let t0 = Date.now(), started;
 
 	$audio.each(function(){
 		const audio = this;
@@ -20,7 +20,7 @@ function play(note) {
 			this.volume-=.01;
 			this.classList.remove('active');
 			this._intId = setInterval(()=>{
-				const t = performance.now(), dt=t-t0;
+				const t = Date.now(), dt=t-t0;
 				t0=t;
 				let {volume} = audio;
 
@@ -46,6 +46,16 @@ function play(note) {
 
 	$petal.removeClass('active');
 	requestAnimationFrame(t=>$petal.addClass('active'))
+
+	if (recording) record(note, t0)
+}
+
+function record(note, t0) {
+
+	if (!localStorage[trackId]) start = t0
+	else localStorage[trackId] += ',';
+
+	localStorage[trackId] += `${note}:${t0 - start}`;
 }
 
 $('.hd-drum svg').clone().prependTo('.hd-drum')
@@ -103,7 +113,56 @@ const petals = $('[data-petal]').each((i, el)=>{
 }).on('touchstart', e =>e.preventDefault());
 
 $win.on('pointerup pointercancel blur', e=>{
-	console.log(e.type)
+	//console.log(e.type)
 	petals.off('pointermove')
 })
+
+let recording = 0, start, trackId, playing, trackTimers = [];
+
+const $rec = $('.hd-rec').on('click', e=>{
+
+	recording ^= 1; // toggle 1-0
+	
+	$rec.toggleClass('hd-active')
+	$player[recording?'removeClass':'addClass']('hd-active');
+
+	if (recording && playing) $play.click();
+
+	if (recording) {
+
+		const tracksList = localStorage.hdTracks || '',
+			tracksCount = tracksList.split(',').length;
+
+		trackId = 'hd_record' + tracksCount;
+
+		localStorage.hdTracks = tracksList + (tracksCount?',':'') + trackId;
+		localStorage[trackId] = ''
+	}
+})
+
+const $play = $('.hd-play').on('click', e=>{
+
+	playing ^= 1;
+	$play.toggleClass('hd-active');
+
+	if (playing) {
+		trackTimers=[];
+
+		localStorage[trackId].split(',').forEach((el, i, all)=>{
+			const [note, time] = el.split(':')
+
+			trackTimers.push(setTimeout(()=>{
+				play(note);
+				if (i==all.length-1 && playing) $play.click()
+			}, time))
+		})
+	} else trackTimers.forEach(timer=>{
+		clearTimeout(timer);
+	})
+})
+$win.on('blur', e=>{
+	if (recording) $rec.click()
+})
+const $player = $('.hd-player')
+
 console.log(`11`)

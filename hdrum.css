@@ -2,7 +2,12 @@
 	max-width: 1000px;
 	margin: auto;
 	position: relative;
+	text-align: center;
 }
+#hdrum-vidget svg{
+	display: block;
+}
+
 .hd-drum {
 	font-size: min(1vh, .96vw, 5px);
 	position: relative;
@@ -12,6 +17,7 @@
 	box-shadow: 1em 1.5em 2.6em #0006;
 	background: url(images/pantam-800.webp) center/cover;
 	border-radius:50%;
+	margin-bottom: 2rem;
 	/* overflow: hidden; */
 }
 .hd-drum>svg {
@@ -57,3 +63,47 @@
 	transition: .8s opacity cubic-bezier(0.1, 0.03, 0.1, 1);
 }
 
+#hdrum-vidget button {
+	padding: 0;
+	border: none;
+	font: inherit;
+	background: transparent;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.hd-controls, .hd-player, .hd-controls button {
+	display: flex;
+	color: #70A8A9;
+	justify-content: center;
+}
+.hd-player, .hd-rec, .hd-listt {
+	border-radius: 100px;
+	box-shadow: 0 0 0 1px inset;
+}
+.hd-player {
+	overflow: hidden;
+	white-space: nowrap;
+	transition: .4s;
+	width: 400px;
+	margin: 0 1em;
+	/* padding-right: 16px; */
+}
+.hd-player:not(.hd-active) {
+	width: 0;
+	opacity: 0;
+	margin: 0;
+}
+.hd-player [type="range"] {
+	width: 100%;
+	margin: 0 17px 0 -2px;
+}
+.hd-rec-play svg>* {
+	transition: .3s;
+}
+.hd-rec-play:not(.hd-active) svg>rect {
+	opacity: 0;
+}
+.hd-rec-play.hd-active svg>g {
+	opacity: 0;
+}
