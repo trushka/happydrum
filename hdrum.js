@@ -7,7 +7,7 @@ function url(url) {
 
 const container=$('#hdrum-vidget');
 
-const notes=[], pointers = [], volume0 = .6;
+const notes=[], volume0 = .6;
 
 function play(note) {
 	const {$audio, $petal} = notes[note];
@@ -44,7 +44,8 @@ function play(note) {
 		}
 	})
 
-	$petal.addClass('active')
+	$petal.removeClass('active');
+	requestAnimationFrame(t=>$petal.addClass('active'))
 }
 
 $('.hd-drum svg').clone().prependTo('.hd-drum')
@@ -64,35 +65,45 @@ const petals = $('[data-petal]').each((i, el)=>{
 		}), $petal
 	}
 		
-	$petal.on('pointerdown', e=>{
-
-		e.preventDefault()
-		e.stopPropagation()
+	$petal.on('pointerdown', function(e){
 
 		play(note);
 
-		pointers[e.pointerId]=note;
+		let lastNote = note;
+
+		this.setPointerCapture(e.pointerId)
+
+		if (note) $(this).on('pointermove', function(e){
+
+			const targ = document.elementFromPoint(e.clientX, e.clientY).parentNode;
+			const note = targ.dataset.petal;
+
+			if (note==lastNote || !note>0) return;
+
+			petals.removeClass('hover');
+			targ.classList.add('hover');
+			play(note);
+
+			lastNote = note;
+		})
 
 	}).on('pointerenter', e =>{
 
 		$petal.addClass('hover');
 
-		if (pointers[e.pointerId]) play(note);
-
 	}).on('pointerleave', e =>{
 
-		$petal.removeClass('hover')
+		petals.removeClass('hover')
 
 	}).on('transitionend', e=>{
 
 		el.classList.remove('active')
+	})
 
-	}).on('pointermove', e =>e.preventDefault());
+}).on('touchstart', e =>e.preventDefault());
+
+$win.on('pointerup pointercancel blur', e=>{
+	console.log(e.type)
+	petals.off('pointermove')
 })
-
-$win.on('pointerup pointercancel', e=>{
-
-	delete pointers[e.pointerId]	
-})
-
-console.log()
+console.log(`11`)
