@@ -3,9 +3,12 @@ const $=jQuery, $win = $(window);
 function url(url) {
 	return new URL(url, import.meta.url).href
 };
-//function
 
-const container=$('#hdrum-vidget');
+const container=$('#hdrum-vidget')
+
+if (!container.children()[0]) {
+	container.html(await $.get(url('hdrum.html')));
+}
 
 const notes=[], volume0 = .6;
 

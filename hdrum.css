@@ -9,7 +9,7 @@
 }
 
 .hd-drum {
-	font-size: min(1vh, .96vw, 5px);
+	font-size: min(1vh, .96vw, 7px);
 	position: relative;
 	width: 100em;
 	height: 100em;
@@ -27,7 +27,8 @@
 	width: 100em;
 	height: 100em;
 	/* pointer-events: fill; */
-	filter: invert(0.001) drop-shadow(0px 0 3px #5557) drop-shadow(1px 0 0px #fff9);
+	filter: drop-shadow(0px 0px 1px #333a) drop-shadow(1px 0px 0px #fff);
+	mix-blend-mode: hard-light;
 }
 .hd-drum>svg:last-child {
 	filter: blur(1px) drop-shadow(0px 0 1px #4445) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
@@ -44,7 +45,7 @@
 	/* cursor: pointer; */
 }
 .hd-drum path {
-	stroke: #010203;
+	stroke: #000;
 	stroke-width: 1.1px;
 }
 .hd-drum g[data-petal] path {
