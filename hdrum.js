@@ -61,8 +61,8 @@ function record(note, t0) {
 	localStorage[trackId] += `${note}:${t0 - start}`;
 }
 
-$('.hd-drum svg').clone().prependTo('.hd-drum')
- .find('[data-petal]').removeAttr(('data-petal'))
+$('.hd-drum>div').clone().prependTo('.hd-drum')
+ .find('[data-petal]').removeAttr(('data-petal'));
 
 const petals = $('[data-petal]').each((i, el)=>{
 
