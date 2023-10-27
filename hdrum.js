@@ -12,40 +12,43 @@ if (!container.children()[0]) {
 
 const notes=[], volume0 = .6;
 
+const ctx = new AudioContext();
+
+async function resume(buffer, note, time) {
+	if (ctx.state != "running") await ctx.resume();
+    const source = ctx.createBufferSource();
+    const gain = new GainNode(ctx, {gain: .6});
+
+    source.buffer = buffer;
+    source.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (note.source) {
+    	const t = ctx.currentTime + .05;
+    	note.gain.gain.linearRampToValueAtTime(0, t);
+    	note.source.stop(t)
+    }
+
+    Object.assign(note, {source, gain})
+
+    source.start(time);
+    $(source).on('ended', e=>{
+    	source.disconnect()
+    	gain.disconnect()
+
+    	if (note.source == source) delete note.source;
+    	//console.log(source)
+    })
+}
+
 function play(note) {
-	const {$audio, $petal} = notes[note];
+	const {buffer, $petal, source} = notes[note];
 
 	let t0 = Date.now(), started;
 
-	$audio.each(function(){
-		const audio = this;
-		if (this.classList.contains('active')) {
-			this.volume-=.01;
-			this.classList.remove('active');
-			this._intId = setInterval(()=>{
-				const t = Date.now(), dt=t-t0;
-				t0=t;
-				let {volume} = audio;
+	resume(buffer, notes[note]);
 
-				volume-=dt*.008
-				if (volume<=0) {
-					audio.pause()
-					audio.currentTime = 0;
-					clearInterval(audio._intId)
-				} else {
-					audio.volume = volume
-				}
-
-			})
-		} else if (!started) {
-			audio.currentTime=0;
-			clearInterval(audio._intId);
-			audio.volume = volume0;
-			audio.classList.add('active');
-			audio.play();
-			started = true
-		}
-	})
+	if (source)
 
 	$petal.removeClass('active');
 	requestAnimationFrame(t=>$petal.addClass('active'))
@@ -64,20 +67,23 @@ function record(note, t0) {
 $('.hd-drum>div').clone().prependTo('.hd-drum')
  .find('[data-petal]').removeAttr(('data-petal'));
 
-const petals = $('[data-petal]').each((i, el)=>{
+const loading = []
+
+const petals = $('[data-petal]').each(async function fn(i, el){
+
+	loading.push(fn);
 
 	const note = el.dataset.petal
 	if (notes[note]) return;
 
 	const $petal = $(`[data-petal="${note}"]`);
 
-	notes[note] = {
-		$audio:$('<audio></audio><audio>').prop({
-			src: url(`notes/${el.dataset.petal}.mp3`),
-			preload: 'auto',
-		}), $petal
-	}
-		
+	const buffer = await fetch(url(`notes/${el.dataset.petal}.mp3`))
+    .then(res => res.arrayBuffer())
+    .then(data => ctx.decodeAudioData(data));
+
+	notes[note] = {buffer, $petal};
+
 	$petal.on('pointerdown', function(e){
 
 		play(note);
@@ -119,6 +125,8 @@ $win.on('pointerup pointercancel blur', e=>{
 	//console.log(e.type)
 	petals.off('pointermove')
 })
+
+Promise.all(loading).then(()=>console.log('all notes loaded'))
 
 let recording = 0, start, trackId, playing, trackTimers = [];
 
