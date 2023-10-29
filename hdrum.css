@@ -58,14 +58,15 @@
 }
 .hd-drum g[data-petal] {
 	opacity: 0;
-	transition: .6s opacity;
+	transition: .7s opacity;
+	/* will-change: opacity; */
 }
 .hd-drum g[data-petal].hover {
 	opacity: 0.7;
 }
 .hd-drum g[data-petal].active {
 	opacity: 1;
-	transition: .8s opacity cubic-bezier(0.1, 0.03, 0.1, 1);
+	transition: .3s opacity ease-out;
 }
 
 #hdrum-vidget button {

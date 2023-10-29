@@ -13,18 +13,28 @@ if (!container.children()[0]) {
 const notes=[], volume0 = .6;
 
 const ctx = new AudioContext();
+const limiter = new DynamicsCompressorNode(ctx, {
+	ratio: 16,
+	knee:5,
+	threshold: -14,
+	//attack: 0,
+	release: .1,
+});
+(window.comp = limiter)
+.connect(new GainNode(ctx, {gain: 1.7}))
+.connect(ctx.destination);
 
 async function resume(buffer, note, time) {
 	if (ctx.state != "running") await ctx.resume();
     const source = ctx.createBufferSource();
-    const gain = new GainNode(ctx, {gain: .6});
+    const gain = new GainNode(ctx, {gain: .23});
+    //gain.connect(ctx.destination);
 
     source.buffer = buffer;
-    source.connect(gain);
-    gain.connect(ctx.destination);
+    source.connect(gain).connect(limiter);
 
     if (note.source) {
-    	const t = ctx.currentTime + .05;
+    	const t = ctx.currentTime + .03;
     	note.gain.gain.linearRampToValueAtTime(0, t);
     	note.source.stop(t)
     }
@@ -44,24 +54,22 @@ async function resume(buffer, note, time) {
 function play(note) {
 	const {buffer, $petal, source} = notes[note];
 
-	let t0 = Date.now(), started;
-
 	resume(buffer, notes[note]);
-
-	if (source)
 
 	$petal.removeClass('active');
 	requestAnimationFrame(t=>$petal.addClass('active'))
 
-	if (recording) record(note, t0)
+	if (recording) record(note)
 }
 
-function record(note, t0) {
+function record(note) {
 
-	if (!localStorage[trackId]) start = t0
+	const t = ctx.currentTime*1000
+
+	if (!localStorage[trackId]) start = t
 	else localStorage[trackId] += ',';
 
-	localStorage[trackId] += `${note}:${t0 - start}`;
+	localStorage[trackId] += `${note}:${Math.round(t - start)}`;
 }
 
 $('.hd-drum>div').clone().prependTo('.hd-drum')
@@ -159,13 +167,16 @@ const $play = $('.hd-play').on('click', e=>{
 	if (playing) {
 		trackTimers=[];
 
-		localStorage[trackId].split(',').forEach((el, i, all)=>{
+		localStorage[trackId].split(',').forEach((el, i, {length})=>{
 			const [note, time] = el.split(':')
 
-			trackTimers.push(setTimeout(()=>{
+			if (!i) play(note)
+			else trackTimers.push(setTimeout(()=>{
 				play(note);
-				if (i==all.length-1 && playing) $play.click()
+				if (i==length-1 && playing) $play.click()
 			}, time))
+
+			if (length==1) $play.click()
 		})
 	} else trackTimers.forEach(timer=>{
 		clearTimeout(timer);
