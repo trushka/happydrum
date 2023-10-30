@@ -162,7 +162,10 @@ const $rec = $('.hd-rec').on('click', e=>{
 		localStorage.hdTracks = tracksList + (tracksCount?',':'') + recId;
 		setTrack(recId);
 
-	} else  delete localStorage[recId];
+	} else {
+		delete localStorage[recId];
+		setTrack()
+	}
 })
 
 const $play = $('.hd-play').on('click', e=>{
