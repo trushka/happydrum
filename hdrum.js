@@ -66,10 +66,10 @@ function record(note) {
 
 	const t = ctx.currentTime*1000
 
-	if (!localStorage[trackId]) start = t
-	else localStorage[trackId] += ',';
+	if (!localStorage[recId]) start = t
+	else localStorage[recId] += ',';
 
-	localStorage[trackId] += `${note}:${Math.round(t - start)}`;
+	localStorage[recId] += `${note}:${Math.round(t - start)}`;
 }
 
 $('.hd-drum>div').clone().prependTo('.hd-drum')
@@ -136,27 +136,33 @@ $win.on('pointerup pointercancel blur', e=>{
 
 Promise.all(loading).then(()=>console.log('all notes loaded'))
 
-let recording = 0, start, trackId, playing, trackTimers = [];
+let recording = 0, start, trackId, recId, playing, trackTimers = [];
 
 const $rec = $('.hd-rec').on('click', e=>{
 
 	recording ^= 1; // toggle 1-0
 	
 	$rec.toggleClass('hd-active')
-	$player[recording?'removeClass':'addClass']('hd-active');
 
 	if (recording && playing) $play.click();
 
+	const tracksList = localStorage.hdTracks || '',
+		tracksCount = tracksList.split(',').length;
+
 	if (recording) {
 
-		const tracksList = localStorage.hdTracks || '',
-			tracksCount = tracksList.split(',').length;
+		$player.removeClass('hd-active');
 
-		trackId = 'hd_record' + tracksCount;
+		recId = 'hd_record_' + tracksCount;
 
-		localStorage.hdTracks = tracksList + (tracksCount?',':'') + trackId;
-		localStorage[trackId] = ''
-	}
+		localStorage[recId] = ''
+
+	} else if (localStorage[recId])  {
+
+		localStorage.hdTracks = tracksList + (tracksCount?',':'') + recId;
+		setTrack(recId);
+
+	} else  delete localStorage[recId];
 })
 
 const $play = $('.hd-play').on('click', e=>{
@@ -167,13 +173,20 @@ const $play = $('.hd-play').on('click', e=>{
 	if (playing) {
 		trackTimers=[];
 
-		localStorage[trackId].split(',').forEach((el, i, {length})=>{
-			const [note, time] = el.split(':')
+		let t0 = timeline.value
 
-			if (!i) play(note)
-			else trackTimers.push(setTimeout(()=>{
+		if (t0 == timeline.max) setTime(t0 = 0);
+		start = ctx.currentTime*1000 - t0;
+
+		localStorage[trackId].split(',').forEach((el, i, {length})=>{
+			let [note, time] = el.split(':')
+
+			time -= t0;
+
+			if (!time) play(note)
+			else if (time>0) trackTimers.push(setTimeout(()=>{
 				play(note);
-				if (i==length-1 && playing) $play.click()
+				//if (i==length-1 && playing) $play.click()
 			}, time))
 
 			if (length==1) $play.click()
@@ -182,9 +195,47 @@ const $play = $('.hd-play').on('click', e=>{
 		clearTimeout(timer);
 	})
 })
+
+function setTrack(id = localStorage.lastTrack) {
+
+	if (!id) return;
+
+	if (!(id in localStorage)) throw `melody ${id} does not exist!`
+
+	trackId = localStorage.lastTrack = id;
+	const track = localStorage[id];
+
+	timeline.max = +(/\d+$/.exec(track))+100
+	setTime(0)
+	$player.addClass('hd-active')
+}
+
+const $player = $('.hd-player');
+const $timeline = $('.hd-timeline input')
+.on('input', setTime).prop({min: 0})
+const timeline = $timeline[0];
+
+//console.log($timeline);
+function setTime(time) {
+	if (!isNaN(time)) timeline.value = Math.min(time, timeline.max);
+	const {min, max, value} = timeline;
+	//console.log(value)
+	if (playing && value == max) $play.click();
+	timeline.parentNode.style.setProperty('--progress', (value - min)/(max - min)*100 + '%')
+}
+
+setTrack();
+
+requestAnimationFrame(function fn(){
+	requestAnimationFrame(fn);
+
+	if (!playing) return;
+
+	setTime(ctx.currentTime*1000 - start);
+})
+
 $win.on('blur', e=>{
 	if (recording) $rec.click()
 })
-const $player = $('.hd-player')
 
 console.log(`11`)
