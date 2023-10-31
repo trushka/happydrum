@@ -23,7 +23,7 @@ dl.hd-notes {
 	height: 3.7em;
 	border-radius: 3em;
 	padding: 0.4em 0;
-	transition: 0.9s;
+	transition: 0.9s box-shadow;
 }
 .hd-notes>div:first-child {
 	/* margin-left: -0.3em; */
@@ -54,9 +54,9 @@ dl.hd-notes {
 }
 
 .hd-drum {
-	font-size: min(1vh, .96vw, 7px);
+	font-size: min(1.1vh, .96vw, 7px);
 	position: relative;
-	max-width: 700px;
+	max-width: 100em;
 	/* height: 100em; */
 	margin: auto;
 	box-shadow: 1em 1.5em 2.6em #0006;
