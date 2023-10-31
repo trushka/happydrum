@@ -12,7 +12,8 @@ dl.hd-notes {
 	display: flex;
 	justify-content: space-between;
 	position: relative;
-	padding-bottom: 2em;
+	padding-bottom: 30px;
+	margin: 1em 0;
 }
 .hd-notes div {
 	display: flex;
@@ -23,6 +24,12 @@ dl.hd-notes {
 	border-radius: 3em;
 	padding: 0.4em 0;
 	transition: 0.9s;
+}
+.hd-notes>div:first-child {
+	/* margin-left: -0.3em; */
+}
+.hd-notes>div:last-child {
+	margin-right: 0em;
 }
 .hd-notes div.hover, .hd-notes div.active {
 	box-shadow: 0 0 0 1px;
@@ -38,10 +45,8 @@ dl.hd-notes {
 }
 .hd-notes [data-petal="0"] dd {
 	font-weight: normal;
-	color: inherit;
 	/* font-variant: small-caps; */
-	height: 1.5em;
-	font-size: .95em;
+	height: 1.4em;
 }
 .hd-notes dt {
 	/* font-variant: all-small-caps; */
@@ -51,8 +56,8 @@ dl.hd-notes {
 .hd-drum {
 	font-size: min(1vh, .96vw, 7px);
 	position: relative;
-	width: 100em;
-	height: 100em;
+	max-width: 700px;
+	/* height: 100em; */
 	margin: auto;
 	box-shadow: 1em 1.5em 2.6em #0006;
 	background: url(images/pantam-800.webp) 50% 85%/100% 100.5%;
@@ -61,18 +66,20 @@ dl.hd-notes {
 	/* overflow: hidden; */
 }
 .hd-drum svg {
-	position: absolute;
-	left: 0;
-	top:0;
-	width: 100em;
-	height: 100em;
+	width: 100%;
+	height: 100%;
 	/* pointer-events: fill; */
 }
 .hd-drum>div{
+	height: 100%;
+	width: 100%;
 	filter: drop-shadow(0px 0px 1px #333a) drop-shadow(1px 0px 0px #fff);
 	mix-blend-mode: hard-light;
 }
 .hd-drum>div:last-child {
+	position: absolute;
+	left: 0;
+	top:0;
 	filter: blur(1px) drop-shadow(0px 0 1px #4445) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
 	mix-blend-mode: luminosity;
 }
@@ -192,5 +199,12 @@ dl.hd-notes {
 		top: 100%;
 		z-index: 1;
 		border: 1px solid;
+	}
+	.hd-notes [data-petal="0"] dd {
+		color: inherit;
+		font-size: .95em;
+}
+	.hd-notes [data-petal="1"] {
+		margin-left: -0.4em;
 	}
 }
