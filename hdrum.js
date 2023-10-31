@@ -52,7 +52,8 @@ async function resume(buffer, note, time) {
 }
 
 function play(note) {
-	if (!notes[note]) return; 
+	if (!notes[note]) return;
+	
 	const {buffer, $petal, source} = notes[note];
 
 	resume(buffer, notes[note]);
@@ -86,10 +87,12 @@ $win.keydown(e=>{
 
 const $petals = $('[data-petal]').each(async function fn(i, el){
 
-	loading.push(fn);
-
 	const note = +el.dataset.petal
 	if (notes[note]) return;
+	console.log(note, notes[note]);
+	notes[note] = {};
+
+	loading.push(fn);
 
 	const $petal = $(`[data-petal="${note}"]`);
 
@@ -131,7 +134,7 @@ const $petals = $('[data-petal]').each(async function fn(i, el){
 
 	}).on('transitionend', e=>{
 
-		el.classList.remove('active')
+		$petal.removeClass('active')
 	})
 
 }).on('touchstart selectstart', e =>e.preventDefault());
