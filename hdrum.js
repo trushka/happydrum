@@ -52,6 +52,7 @@ async function resume(buffer, note, time) {
 }
 
 function play(note) {
+	if (!notes[note]) return; 
 	const {buffer, $petal, source} = notes[note];
 
 	resume(buffer, notes[note]);
@@ -75,18 +76,24 @@ function record(note) {
 $('.hd-drum>div').clone().prependTo('.hd-drum')
  .find('[data-petal]').removeAttr(('data-petal'));
 
-const loading = []
+const loading = [];
 
-const petals = $('[data-petal]').each(async function fn(i, el){
+const keys = '0123456789QWERTY';
+$win.keydown(e=>{
+	if (e.originalEvent.repeat) return;
+	play(keys.indexOf(e.code.at(-1)))
+})
+
+const $petals = $('[data-petal]').each(async function fn(i, el){
 
 	loading.push(fn);
 
-	const note = el.dataset.petal
+	const note = +el.dataset.petal
 	if (notes[note]) return;
 
 	const $petal = $(`[data-petal="${note}"]`);
 
-	const buffer = await fetch(url(`notes/${el.dataset.petal}.mp3`))
+	const buffer = await fetch(url(`notes/${note||'took'}.mp3`))
     .then(res => res.arrayBuffer())
     .then(data => ctx.decodeAudioData(data));
 
@@ -100,15 +107,15 @@ const petals = $('[data-petal]').each(async function fn(i, el){
 
 		this.setPointerCapture(e.pointerId)
 
-		if (note) $(this).on('pointermove', function(e){
+		$(this).on('pointermove', function(e){
 
-			const targ = document.elementFromPoint(e.clientX, e.clientY).parentNode;
-			const note = targ.dataset.petal;
+			const targ = $(document.elementFromPoint(e.clientX, e.clientY)).closest('[data-petal]')[0];
+			const note = targ?.dataset.petal;
 
-			if (note==lastNote || !note>0) return;
+			if (note==lastNote || !(note>0)) return;
 
-			petals.removeClass('hover');
-			targ.classList.add('hover');
+			$petals.removeClass('hover')
+			.find(`[data-petal="${note}"]`).addClass('hover');
 			play(note);
 
 			lastNote = note;
@@ -120,18 +127,18 @@ const petals = $('[data-petal]').each(async function fn(i, el){
 
 	}).on('pointerleave', e =>{
 
-		petals.removeClass('hover')
+		$petals.removeClass('hover')
 
 	}).on('transitionend', e=>{
 
 		el.classList.remove('active')
 	})
 
-}).on('touchstart', e =>e.preventDefault());
+}).on('touchstart selectstart', e =>e.preventDefault());
 
 $win.on('pointerup pointercancel blur', e=>{
 	//console.log(e.type)
-	petals.off('pointermove')
+	$petals.off('pointermove')
 })
 
 Promise.all(loading).then(()=>console.log('all notes loaded'))

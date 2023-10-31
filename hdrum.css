@@ -8,6 +8,46 @@
 	display: block;
 }
 
+dl.hd-notes {
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	padding-bottom: 2em;
+}
+.hd-notes div {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	width: 2em;
+	height: 3.7em;
+	border-radius: 3em;
+	padding: 0.4em 0;
+	transition: 0.9s;
+}
+.hd-notes div.hover, .hd-notes div.active {
+	box-shadow: 0 0 0 1px;
+}
+.hd-notes div.active {
+	transition: .1s;
+}
+.hd-notes dd {
+	font-weight: bold;
+	color: #1D1D1D;
+	margin: 0;
+	height: 1.2em;
+}
+.hd-notes [data-petal="0"] dd {
+	font-weight: normal;
+	color: inherit;
+	/* font-variant: small-caps; */
+	height: 1.5em;
+	font-size: .95em;
+}
+.hd-notes dt {
+	/* font-variant: all-small-caps; */
+	font-size: .9em;
+}
+
 .hd-drum {
 	font-size: min(1vh, .96vw, 7px);
 	position: relative;
@@ -15,7 +55,7 @@
 	height: 100em;
 	margin: auto;
 	box-shadow: 1em 1.5em 2.6em #0006;
-	background: url(images/pantam-800.webp) center/cover;
+	background: url(images/pantam-800.webp) 50% 85%/100% 100.5%;
 	border-radius:50%;
 	margin-bottom: 2rem;
 	/* overflow: hidden; */
@@ -143,4 +183,14 @@
 }
 .hd-rec-play.hd-active svg>g {
 	opacity: 0;
+}
+
+@media screen and (max-width: 850px) {
+	.hd-notes [data-petal="0"] {
+		position: absolute;
+		right: 0;
+		top: 100%;
+		z-index: 1;
+		border: 1px solid;
+	}
 }
