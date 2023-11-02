@@ -94,8 +94,10 @@ dl.hd-notes {
 
 .hd-main {
 	display: flex;
+	margin: auto;
 	margin-bottom: 2.7rem;
 	align-items: center;
+	max-width: 630px;
 }
 .hd-drum {
 	font-size: min(1.1vh, .96vw, 4.3px);
