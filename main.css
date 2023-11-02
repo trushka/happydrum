@@ -34,7 +34,7 @@ h1 {
     font-style: italic;
     text-align: center;
     /* padding-top: 12px; */
-    margin: 0 0 clamp(36px, calc(100vh - 780px), 110px);
+    margin: 0 0 clamp(36px, calc(100vh - 782px), 110px);
  }
 }
 @media screen and (max-width: 650px) {

@@ -160,14 +160,14 @@ const $rec = $('.hd-rec').on('click', e=>{
 	
 	$rec.toggleClass('hd-active')
 
-	if (recording && playing) $play.click();
+	//if (recording && playing) $play.click();
 
 	const tracksList = localStorage.hdTracks || '',
 		tracksCount = tracksList.split(',').length;
 
 	if (recording) {
 
-		$player.removeClass('hd-active');
+		//$player.removeClass('hd-active');
 
 		recId = 'hd_record_' + tracksCount;
 
