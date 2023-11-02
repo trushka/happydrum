@@ -107,11 +107,12 @@ dl.hd-notes {
 	background: url(images/pantam-800.webp) 100% 85%/100.25% 100.5%;
 	border-radius:50%;
 	/* overflow: hidden; */
+	pointer-events: none;
 }
 @media screen and (max-width: 600px) {
 	.hd-main {
 	justify-content: space-evenly;
-	align-items: initial;
+	align-items: flex-start;
 	}
 	.hd-drum {
 		margin: 0 -53px 0;
