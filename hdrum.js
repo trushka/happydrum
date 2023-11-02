@@ -69,15 +69,15 @@ function play(note) {
 
 	if (recording) record(note)
 }
-
+let startRec;
 function record(note) {
 
 	const t = ctx.currentTime*1000
 
-	if (!localStorage[recId]) start = t
+	if (!localStorage[recId]) startRec = t
 	else localStorage[recId] += ',';
 
-	localStorage[recId] += `${note}:${Math.round(t - start)}`;
+	localStorage[recId] += `${note}:${Math.round(t - startRec)}`;
 }
 
 $('.hd-drum>div').clone().prependTo('.hd-drum')
