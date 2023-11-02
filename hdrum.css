@@ -35,7 +35,7 @@ dl.hd-notes {
 	margin-right: 0em;
 }
 .hd-notes div.hover, .hd-notes div.active {
-	box-shadow: 0 0 0 1px var(--color);
+	box-shadow: 0 0 0 2px var(--color);
 }
 .hd-notes div.active {
 	transition: .1s;
