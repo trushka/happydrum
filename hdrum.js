@@ -1,5 +1,11 @@
 const $=jQuery, $win = $(window);
 
+const gamma = []
+for (let i = 0; i < 15; i++) {
+	gamma[i] = i + 1 + ':' + i * 500
+} 	
+console.log(gamma);
+
 function url(url) {
 	return new URL(url, import.meta.url).href
 };
@@ -146,7 +152,7 @@ $win.on('pointerup pointercancel blur', e=>{
 
 Promise.all(loading).then(()=>console.log('all notes loaded'))
 
-let recording = 0, start, trackId, recId, playing, trackTimers = [];
+let recording = 0, start, trackId, track, recId, playing, trackTimers = [];
 
 const $rec = $('.hd-rec').on('click', e=>{
 
@@ -191,7 +197,7 @@ const $play = $('.hd-play').on('click', e=>{
 		if (t0 == timeline.max) setTime(t0 = 0);
 		start = ctx.currentTime*1000 - t0;
 
-		localStorage[trackId].split(',').forEach((el, i, {length})=>{
+		track.forEach((el, i, {length})=>{
 			let [note, time] = el.split(':')
 
 			time -= t0;
@@ -213,13 +219,17 @@ function setTrack(id = localStorage.lastTrack) {
 
 	if (!id) return;
 
-	if (!(id in localStorage)) throw `melody ${id} does not exist!`
+	if (id != gamma && !(id in localStorage)) {
+		console.warn(`melody ${id} does not exist!`);
+		return;
+	}
 
-	trackId = localStorage.lastTrack = id;
-	const track = localStorage[id];
+	if (id != gamma) trackId = localStorage.lastTrack = id;
 
-	timeline.max = +(/\d+$/.exec(track))+100
-	setTime(0)
+	track = localStorage[id]?.split(',') || gamma;
+
+	timeline.max = +(/\d+$/.exec(track.at(-1)))+100
+	setTime(0);
 	$player.addClass('hd-active')
 }
 
@@ -233,11 +243,23 @@ function setTime(time) {
 	if (!isNaN(time)) timeline.value = Math.min(time, timeline.max);
 	const {min, max, value} = timeline;
 	//console.log(value)
-	if (playing && value == max) $play.click();
+	if (playing && value == max) {
+		$play.click();
+		if (track != gamma) return;
+
+		$player.removeClass('hd-active');
+		setTrack();
+	}
 	timeline.parentNode.style.setProperty('--progress', (value - min)/(max - min)*100 + '%')
 }
 
 setTrack();
+
+$('.hd-gamma').click(e=>{
+	if (playing) $play.click();
+	setTrack(gamma)
+	$play.click()
+})
 
 requestAnimationFrame(function fn(){
 	requestAnimationFrame(fn);

@@ -7,8 +7,9 @@
 body {
   font-family: Wix Madefor Display, sans-serif;
   background: #fdf6f2;
-  margin-top: 35px;
+  margin: 35px min(47px, 4.3vw);
   font-size: 120%;
+  margin-bottom: 10px;
 }
 h1 {
     padding-top: 12px;
@@ -31,14 +32,14 @@ h1 {
 	h1 {
     font-size: 40px;
     font-style: italic;
-		text-align: center;
-		/* padding-top: 12px; */
-		margin: 0 0 36px;
-	}
+    text-align: center;
+    /* padding-top: 12px; */
+    margin: 0 0 clamp(36px, calc(100vh - 780px), 110px);
+ }
 }
 @media screen and (max-width: 650px) {
 	body {
-		margin-top: 20px;
+		margin: 20px 10px;
 		font-size: 100%;
 	}
 	h1 {
