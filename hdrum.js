@@ -271,6 +271,16 @@ requestAnimationFrame(function fn(){
 
 $win.on('blur', e=>{
 	if (recording) $rec.click()
+});
+
+[...'ABDFACEFDBGEC'].forEach((char, i)=>{
+	$('<b class="hd-tag">'+char.replace(/F/g, 'F<sub>#</sub>')+'</b>').css({
+		'--rot': i / 13 + 'turn'
+	}).prependTo('.hd-drum')
+})
+'235791113141210864'.match(/1?./g).forEach((n, i)=>{
+	$(`<b class="hd-tag-n hd-n${i+2}">${n}</b>`)
+	.prependTo('.hd-drum')
 })
 
 console.log(`11`)
