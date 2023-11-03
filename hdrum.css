@@ -181,6 +181,7 @@ dl.hd-notes {
 	cursor: pointer;
 	vertical-align: middle;
 	-webkit-tap-highlight-color: transparent;
+	outline: none;
 }
 .hd-controls button svg {
 	margin: -1px;
