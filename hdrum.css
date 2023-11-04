@@ -91,6 +91,7 @@ dl.hd-notes {
 	justify-content: center;
 	border-radius: 50px;
 	align-items: center;
+	user-select: none;
 }
 
 .hd-main {
@@ -123,23 +124,17 @@ dl.hd-notes {
 	}
 }
 
-.hd-drum svg {
-	width: 100%;
-	height: 100%;
-	/* pointer-events: fill; */
-}
-.hd-drum>div{
+.hd-drum svg{
 	height: 100%;
 	width: 100%;
-	filter: drop-shadow(0px 0px 1px #333a) drop-shadow(1px 0px 0px #fff);
 	mix-blend-mode: hard-light;
 }
-.hd-drum>div:last-of-type {
+svg.hd-drum2 {
 	position: absolute;
 	left: 0;
 	top:0;
-	filter: blur(1px) drop-shadow(0px 0 1px #4445) drop-shadow(1px 0 3px #fff) drop-shadow(-1px 0 6px #ffc) drop-shadow(0px 0 6px #fff);
-	mix-blend-mode: luminosity;
+	mix-blend-mode: color-dodge;
+	filter: none;
 }
 
 .hd-drum svg>g {
@@ -155,23 +150,43 @@ dl.hd-notes {
 }
 .hd-drum path {
 	stroke: #000;
-	stroke-width: 1.1px;
+	stroke-width: 1.15px;
 }
-.hd-drum g[data-petal] path {
-	stroke: #ffc;
-	stroke-width: 1.2px;
+path.hd-white {
+	stroke: #fff;
+	opacity: 0.5;
+	transform: translateX(0.7px);
+	/* display: none; */
+	stroke-width: 2.3px;
+}
+.hd-drum2 path {
+	filter: url(./#hd-glow);
+	stroke: #ffd;
+	stroke-width: 0.9px;
 }
 .hd-drum g[data-petal] {
-	opacity: 0;
-	transition: .7s opacity;
-	/* will-change: opacity; */
+	transition: 1.2s opacity;
+	will-change: opacity;
 }
 .hd-drum g[data-petal].hover {
-	opacity: 0.7;
+	transition-duration: .7s
 }
 .hd-drum g[data-petal].active {
+	transition-duration: .2s
+}
+.hd-drum2 g[data-petal] {
+	opacity: 0.001;
+}
+
+.hd-drum g.hover, .hd-drum g.active {
+	opacity: 0;
+}
+.hd-drum2 g.hover {
+	opacity: 0.8;
+}
+.hd-drum2 g.active {
 	opacity: 1;
-	transition: .3s opacity ease-out;
+	transition: 0.1s opacity;
 }
 
 .hd-controls button {

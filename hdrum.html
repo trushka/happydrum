@@ -27,7 +27,47 @@
 		<circle cx=31.5 cy=1.6 r=2.4 fill=currentColor />
 	</svg></button>
 	<div class="hd-drum">
-		<div><svg width="484" height="484" fill="none" version="1.1" viewBox="0 0 484 473">
+		<svg width="484" height="484" fill="none" version="1.1" viewBox="0 0 484 473">
+			<filter id="hd-glow" color-interpolation-filters="sRGB" height="300%" width="300%" x="-100%" y="-100%">
+
+				<feMorphology operator="dilate" radius="1.3" result="thicken" />
+
+				<feGaussianBlur  stdDeviation="3" result=1 />
+				<feGaussianBlur  stdDeviation="3" result=2 />
+				<feGaussianBlur  stdDeviation="5" result=3 />
+				<feGaussianBlur  stdDeviation="5" result=4 />
+				<feGaussianBlur  stdDeviation="5" result=5 />
+				<feGaussianBlur  stdDeviation="10" result="6" />
+				<feGaussianBlur stdDeviation="10"  result="7"/>
+
+				<!--	Layer the effects together -->
+				<feMerge>
+					<feMergeNode in="6"/>
+					<feMergeNode in="5"/>
+					<feMergeNode in="1"/>
+					<feMergeNode in="3"/>
+					<feMergeNode in="SourceGraphic"/>
+					<feMergeNode in="7"/>
+					<feMergeNode in="7"/>
+				</feMerge>
+			</filter>
+
+			<filter id="hd-grove" color-interpolation-filters="sRGB" x="-5%" y="-5%" width="110%" height="110%">
+
+			  <feFlood flood-color="#fff" result="flood-0" style="flood-opacity: 0.8;"></feFlood>
+			  <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="gaussian-blur-0"></feGaussianBlur>
+			  <feMerge result="merge-2">
+			    <feMergeNode in="SourceAlpha"></feMergeNode>
+			    <feMergeNode in="gaussian-blur-0"></feMergeNode>
+			  </feMerge>
+			  <feOffset dx="0.5"/>
+			  <feComponentTransfer result="offsetblur"/>
+			    <feFuncA id="spread-ctrl" type="linear" slope="0.7"></feFuncA>
+			  </feComponentTransfer>
+			  <feComposite in2="offsetblur" operator="in" in="flood-0" result="composite-0"></feComposite>
+				<feComposite result="composite-1" in="SourceGraphic" in2="composite-0" operator="over"></feComposite>
+			</filter>
+
 			<g transform="matrix(1.16 0 0 1.16 -30.3 -29.7)">
 				<g data-petal="1">
 					<path d="m272 188v64.3c1.23 19.9-8.99 29-22.8 34.2m-48.3-97.1v65.6c0.536 14 8.5 27.2 23.5 32.2 4.72 2.01 7.91 1.85 13.4 1.64 4.01-0.153 7.83-0.957 11.4-2.3m-24.8 0.665-1.82-80.7m26.6 80.1v-67.6"/>
@@ -90,7 +130,7 @@
 					<rect transform="matrix(-.796 .605 .605 .796 134 252)" width="69" height="40.1" rx="19.5"/>
 				</g>
 			</g>
-		</svg></div>
+		</svg>
 		<b class="hd-tag g">G</b>
 		<b class="hd-tag-n hd-n1">1</b>
 		<b class="hd-tag-n hd-n15">15</b>

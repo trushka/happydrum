@@ -1,4 +1,6 @@
 const $=jQuery, $win = $(window);
+import lamejs from './lame.min.js'
+console.log(lamejs.Mp3Encoder)
 
 const gamma = []
 for (let i = 0; i < 15; i++) {
@@ -20,20 +22,21 @@ const notes=[], volume0 = .6;
 
 const ctx = new AudioContext();
 const limiter = new DynamicsCompressorNode(ctx, {
-	ratio: 16,
-	knee:5,
-	threshold: -14,
+	ratio: 17,
+	knee:8,
+	threshold: -16,
 	//attack: 0,
 	release: .1,
 });
 (window.comp = limiter)
-.connect(new GainNode(ctx, {gain: 1.7}))
+.connect(new GainNode(ctx, {gain: 1.65}))
 .connect(ctx.destination);
 
-async function resume(buffer, note, time) {
+async function resume(buffer, note, i, time) {
 	if (ctx.state != "running") await ctx.resume();
     const source = ctx.createBufferSource();
-    const gain = new GainNode(ctx, {gain: .23});
+    console.log(i)
+    const gain = new GainNode(ctx, {gain: i==6?.25:.35});
     //gain.connect(ctx.destination);
 
     source.buffer = buffer;
@@ -60,12 +63,13 @@ async function resume(buffer, note, time) {
 function play(note) {
 	if (!notes[note]) return;
 	
-	const {buffer, $petal, source} = notes[note];
+	const {buffer, $petal, source, timer} = notes[note];
 
-	resume(buffer, notes[note]);
+	resume(buffer, notes[note], note);
 
-	$petal.removeClass('active');
-	requestAnimationFrame(t=>$petal.addClass('active'))
+	$petal.addClass('active');
+	clearTimeout(timer);
+	notes[note].timer=setTimeout(()=>{$petal.removeClass('active')}, 350)
 
 	if (recording) record(note)
 }
@@ -80,8 +84,8 @@ function record(note) {
 	localStorage[recId] += `${note}:${Math.round(t - startRec)}`;
 }
 
-$('.hd-drum>div').clone().prependTo('.hd-drum')
- .find('[data-petal]').removeAttr(('data-petal'));
+$('.hd-drum>svg').clone().addClass('hd-drum2').appendTo('.hd-drum')
+ .find('filter').remove();
 
 const loading = [];
 
@@ -93,10 +97,13 @@ $win.keydown(e=>{
 
 const $petals = $('[data-petal]').each(async function fn(i, el){
 
+	if (!$(el).closest('.hd-drum2')[0])
+		$('path', el).clone().prependTo(el).addClass('hd-white');
+
 	const note = +el.dataset.petal
 	if (notes[note]) return;
 	console.log(note, notes[note]);
-	notes[note] = {};
+	notes[note] = {i};
 
 	loading.push(fn);
 
@@ -107,6 +114,8 @@ const $petals = $('[data-petal]').each(async function fn(i, el){
     .then(data => ctx.decodeAudioData(data));
 
 	notes[note] = {buffer, $petal};
+
+	let timer;
 
 	$petal.on('pointerdown', function(e){
 
@@ -137,10 +146,6 @@ const $petals = $('[data-petal]').each(async function fn(i, el){
 	}).on('pointerleave', e =>{
 
 		$petals.removeClass('hover')
-
-	}).on('transitionend', e=>{
-
-		$petal.removeClass('active')
 	})
 
 }).on('touchstart selectstart', e =>e.preventDefault());
