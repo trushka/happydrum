@@ -161,12 +161,13 @@ path.hd-white {
 }
 .hd-drum2 path {
 	filter: url(./#hd-glow);
-	stroke: #ffd;
+	stroke: #ffc;
 	stroke-width: 0.9px;
 }
 .hd-drum g[data-petal] {
 	transition: 1.2s opacity;
-	will-change: opacity;
+	/* will-change: opacity; */
+	/* filter: url(./#hd-dark); */
 }
 .hd-drum g[data-petal].hover {
 	transition-duration: .7s

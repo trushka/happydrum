@@ -1,6 +1,6 @@
 const $=jQuery, $win = $(window);
-import lamejs from './lame.min.js'
-console.log(lamejs.Mp3Encoder)
+
+import {ctx, playBuffer, saveRecord, notes} from './audio_utils.js'
 
 const gamma = []
 for (let i = 0; i < 15; i++) {
@@ -18,54 +18,12 @@ if (!container.children()[0]) {
 	container.html(await $.get(url('hdrum.html')));
 }
 
-const notes=[], volume0 = .6;
-
-const ctx = new AudioContext();
-const limiter = new DynamicsCompressorNode(ctx, {
-	ratio: 17,
-	knee:8,
-	threshold: -16,
-	//attack: 0,
-	release: .1,
-});
-(window.comp = limiter)
-.connect(new GainNode(ctx, {gain: 1.65}))
-.connect(ctx.destination);
-
-async function resume(buffer, note, i, time) {
-	if (ctx.state != "running") await ctx.resume();
-    const source = ctx.createBufferSource();
-    console.log(i)
-    const gain = new GainNode(ctx, {gain: i==6?.25:.35});
-    //gain.connect(ctx.destination);
-
-    source.buffer = buffer;
-    source.connect(gain).connect(limiter);
-
-    if (note.source) {
-    	const t = ctx.currentTime + .03;
-    	note.gain.gain.linearRampToValueAtTime(0, t);
-    	note.source.stop(t)
-    }
-
-    Object.assign(note, {source, gain})
-
-    source.start(time);
-    $(source).on('ended', e=>{
-    	source.disconnect()
-    	gain.disconnect()
-
-    	if (note.source == source) delete note.source;
-    	//console.log(source)
-    })
-}
-
 function play(note) {
 	if (!notes[note]) return;
 	
-	const {buffer, $petal, source, timer} = notes[note];
+	const {$petal, timer} = notes[note];
 
-	resume(buffer, notes[note], note);
+	playBuffer(notes[note]);
 
 	$petal.addClass('active');
 	clearTimeout(timer);
@@ -95,27 +53,24 @@ $win.keydown(e=>{
 	play(keys.indexOf(e.code.at(-1)))
 })
 
-const $petals = $('[data-petal]').each(async function fn(i, el){
+const $petals = $('[data-petal]').each((i, el) => {
 
 	if (!$(el).closest('.hd-drum2')[0])
 		$('path', el).clone().prependTo(el).addClass('hd-white');
 
 	const note = +el.dataset.petal
 	if (notes[note]) return;
-	console.log(note, notes[note]);
-	notes[note] = {i};
-
-	loading.push(fn);
 
 	const $petal = $(`[data-petal="${note}"]`);
 
-	const buffer = await fetch(url(`notes/${note||'took'}.mp3`))
-    .then(res => res.arrayBuffer())
-    .then(data => ctx.decodeAudioData(data));
+	notes[note] = {$petal, i};
 
-	notes[note] = {buffer, $petal};
-
-	let timer;
+	loading.push(
+	 fetch(url(`notes/${note||'took'}.mp3`))
+     .then(res => res.arrayBuffer())
+     .then(data => ctx.decodeAudioData(data))
+	 .then(buffer => notes[note].buffer = buffer)
+	);
 
 	$petal.on('pointerdown', function(e){
 
@@ -174,7 +129,7 @@ const $rec = $('.hd-rec').on('click', e=>{
 
 		//$player.removeClass('hd-active');
 
-		recId = 'hd_record_' + tracksCount;
+		recId = 'hd_record_melody' + tracksCount;
 
 		localStorage[recId] = ''
 
@@ -231,7 +186,7 @@ function setTrack(id = localStorage.lastTrack) {
 
 	if (id != gamma) trackId = localStorage.lastTrack = id;
 
-	track = localStorage[id]?.split(',') || gamma;
+	window.curTrack = track = localStorage[id]?.split(',') || gamma;
 
 	timeline.max = +(/\d+$/.exec(track.at(-1)))+100
 	setTime(0);

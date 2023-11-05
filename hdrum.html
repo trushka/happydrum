@@ -52,20 +52,8 @@
 				</feMerge>
 			</filter>
 
-			<filter id="hd-grove" color-interpolation-filters="sRGB" x="-5%" y="-5%" width="110%" height="110%">
-
-			  <feFlood flood-color="#fff" result="flood-0" style="flood-opacity: 0.8;"></feFlood>
-			  <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="gaussian-blur-0"></feGaussianBlur>
-			  <feMerge result="merge-2">
-			    <feMergeNode in="SourceAlpha"></feMergeNode>
-			    <feMergeNode in="gaussian-blur-0"></feMergeNode>
-			  </feMerge>
-			  <feOffset dx="0.5"/>
-			  <feComponentTransfer result="offsetblur"/>
-			    <feFuncA id="spread-ctrl" type="linear" slope="0.7"></feFuncA>
-			  </feComponentTransfer>
-			  <feComposite in2="offsetblur" operator="in" in="flood-0" result="composite-0"></feComposite>
-				<feComposite result="composite-1" in="SourceGraphic" in2="composite-0" operator="over"></feComposite>
+			<filter id="hd-dark" color-interpolation-filters="sRGB">
+			  <feColorMatrix values="2 0 0 0 -1 0 2 0 0 -1 0 0 2 0 -1 0 0 0 1 0"></feColorMatrix>
 			</filter>
 
 			<g transform="matrix(1.16 0 0 1.16 -30.3 -29.7)">
