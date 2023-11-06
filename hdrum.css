@@ -3,6 +3,9 @@
 	margin: auto;
 	position: relative;
 	text-align: center;
+	width: -webkit-fill-available;
+	width: -moz-available;
+	width: stretch;
 }
 #hdrum-vidget svg{
 	display: block;
@@ -14,6 +17,7 @@ dl.hd-notes {
 	position: relative;
 	padding-bottom: 30px;
 	margin: 1em 0;
+	flex-grow: 0.7;
 }
 .hd-notes div {
 	display: flex;
@@ -116,11 +120,22 @@ dl.hd-notes {
 }
 @media screen and (max-width: 600px) {
 	.hd-main {
-	justify-content: space-evenly;
-	align-items: flex-start;
+		justify-content: space-evenly;
+		align-items: flex-start;
+		flex-grow: 0.35;
 	}
 	.hd-drum {
 		margin: 0 -53px 0;
+	}
+	.hd-main>button {
+		margin-top: -15px;
+	}
+	#hdrum-vidget {
+	    display: flex;
+	    flex-direction: column;
+	    justify-content: space-between;
+	    flex-basis: revert;
+	    flex-grow: 0.8;
 	}
 }
 
@@ -198,29 +213,28 @@ path.hd-white {
 	vertical-align: middle;
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
+	border: 1px solid;
 }
 .hd-controls button svg {
 	margin: -1px;
 }
-.hd-player, .hd-rec, .hd-listt, .hd-gamma, .hd-took {
+.hd-player, .hd-list, .hd-controls>button {
 	border: 1px solid;
 	transition: .3s;
 }
 .hd-gamma, .hd-play {
-	border: none;
+	border: none !important;
 }
+.hd-controls>button:hover,
 .hd-player:hover,
-.hd-gamma:hover, 
-.hd-rec:hover,
 .hd-rec.hd-active, 
-.hd-listt:hover, 
+.hd-list:hover, 
 .hd-took.hover {
 	box-shadow: 3px 2px 18px 1px;
 }
-.hd-player:active,
-.hd-gamma:active, 
-.hd-rec:active, 
-.hd-listt:active, 
+.hd-controls>button:active,
+.hd-player:active, 
+.hd-list:active, 
 .hd-took.active {
 
 	box-shadow: 0 0 0 1px, 3px 2px 16px -1px;

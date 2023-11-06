@@ -3,6 +3,7 @@
 
 :root {
 	font-size: 16px;
+	height: 100%;
 }
 body {
   font-family: Wix Madefor Display, sans-serif;
@@ -48,5 +49,15 @@ h1 {
 	    font-style: normal;
 	    letter-spacing: -.086px;
 	    text-transform: uppercase;
+	}
+}
+@media screen and (max-width: 600px) {
+	body {
+		display: flex;
+		flex-direction: column;
+		min-height: -webkit-fill-available;
+		min-height: -moz-available;
+		min-height: stretch;
+		justify-content: space-between;
 	}
 }
