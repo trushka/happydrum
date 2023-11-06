@@ -69,7 +69,7 @@ async function saveRecord(track, name='tankdrum'){
 
 	track.forEach(item => {
 		const [note, time] = item.split(':')
-		console.log(time);
+		//console.log(time);
 		playBuffer(notes[note], time / 1000 + silence, offlineCtx)
 	})
 

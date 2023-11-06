@@ -150,6 +150,7 @@ const $play = $('.hd-play').on('click', e=>{
 	$play.toggleClass('hd-active');
 
 	if (playing) {
+
 		trackTimers=[];
 
 		let t0 = timeline.value
@@ -171,6 +172,8 @@ const $play = $('.hd-play').on('click', e=>{
 			if (length==1) $play.click()
 		})
 	} else trackTimers.forEach(timer=>{
+		$gamma.removeClass('active');
+
 		clearTimeout(timer);
 	})
 })
@@ -221,10 +224,11 @@ function setTime(time) {
 
 setTrack();
 
-$('.hd-gamma').click(e=>{
+const $gamma = $('.hd-gamma').click(function(e){
 	if (playing) $play.click();
 	setTrack(gamma)
 	$play.click()
+	if (playing) $gamma.addClass('active')
 })
 
 requestAnimationFrame(function fn(){
@@ -234,6 +238,8 @@ requestAnimationFrame(function fn(){
 
 	setTime(ctx.currentTime*1000 - start);
 })
+
+const $share = $('.hd-share').click(e=>saveRecord(track, localStorage.lastTrack.replace('hd_record_', '')))
 
 $win.on('blur', e=>{
 	if (recording) $rec.click()

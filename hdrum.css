@@ -229,7 +229,8 @@ path.hd-white {
 .hd-player:hover,
 .hd-rec.hd-active, 
 .hd-list:hover, 
-.hd-took.hover {
+.hd-took.hover,
+.hd-gamma.active {
 	box-shadow: 3px 2px 18px 1px;
 }
 .hd-controls>button:active,
@@ -248,7 +249,8 @@ path.hd-white {
 	margin: 0 1em;
 	/* padding-right: 16px; */
 }
-.hd-player:not(.hd-active) {
+.hd-player:not(.hd-active),
+.hd-player:not(.hd-active) ~ button {
 	width: 0;
 	opacity: 0;
 	margin: 0;
