@@ -162,11 +162,11 @@ path.hd-white {
 .hd-drum2 path {
 	filter: url(./#hd-glow);
 	stroke: #ffc;
-	stroke-width: 0.9px;
+	stroke-width: 0.8px;
 }
 .hd-drum g[data-petal] {
 	transition: 1.2s opacity;
-	/* will-change: opacity; */
+	will-change: opacity;
 	/* filter: url(./#hd-dark); */
 }
 .hd-drum g[data-petal].hover {
@@ -211,7 +211,8 @@ path.hd-white {
 }
 .hd-player:hover,
 .hd-gamma:hover, 
-.hd-rec:hover, 
+.hd-rec:hover,
+.hd-rec.hd-active, 
 .hd-listt:hover, 
 .hd-took.hover {
 	box-shadow: 3px 2px 18px 1px;
@@ -221,7 +222,8 @@ path.hd-white {
 .hd-rec:active, 
 .hd-listt:active, 
 .hd-took.active {
-	box-shadow: 3px 2px 16px -1px;
+
+	box-shadow: 0 0 0 1px, 3px 2px 16px -1px;
 	transition: .2s cubic-bezier(0.35, 0.71, 0.11, 1);
 }
 .hd-player {
@@ -286,6 +288,12 @@ button.hd-took {
 }
 .hd-rec-play.hd-active svg>g {
 	opacity: 0;
+}
+.hd-rec.hd-active {
+	animation: recording .9s alternate infinite ease-in-out;
+}
+@keyframes recording {
+	100% {color: #F37B7B}
 }
 
 .hd-tag {

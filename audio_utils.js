@@ -54,14 +54,18 @@ function playBuffer(note, time, context=ctx) {
     })
 }
 
-async function saveRecord(track){
+async function saveRecord(track, name='tankdrum'){
 
 	const silence = .1, bitRate =  48000,
-	 last = track.at(-1).split(':'),
-	 duration = last[1] / 1000 + notes[last[0]].buffer.duration +silence;
+	 duration = track.reduce((dur, item)=>{
+		const [note, time] = item.split(':')
+		return Math.max(dur, time / 1000 + notes[note].buffer.duration)
+	 }, 0) + silence
 
-	const offlineCtx = new OfflineAudioContext(2, bitRate * duration, bitRate);
+	const offlineCtx = new OfflineAudioContext(1, bitRate * duration, bitRate);
 	addCompressor(offlineCtx);
+
+	const encoder = new Mp3Encoder(1, bitRate, 128);
 
 	track.forEach(item => {
 		const [note, time] = item.split(':')
@@ -71,7 +75,17 @@ async function saveRecord(track){
 
 	offlineCtx.startRendering().then((buffer) => {
 		console.log(buffer);
-		playBuffer({buffer})
+
+		//playBuffer({buffer})
+		const data=buffer.getChannelData(0);
+
+		data.forEach((d, i)=>data[i]=Math.floor(d*32767))
+		var blob = new Blob([encoder.encodeBuffer(data), encoder.flush()], {type: 'audio/mp3'});
+		var href = window.URL.createObjectURL(blob);
+
+		jQuery('<a>').prop({href, download: name + '.mp3'})[0].click()
+		//window.open(url);
+
 		// audioEncoder(buf, 128, function (e) {
 		// 	progress(e)
 		// }, function onComplete(blob) {

@@ -68,7 +68,7 @@ const $petals = $('[data-petal]').each((i, el) => {
 	loading.push(
 	 fetch(url(`notes/${note||'took'}.mp3`))
      .then(res => res.arrayBuffer())
-     .then(data => ctx.decodeAudioData(data))
+     .then(data => console.log(new DataView(data).getInt8())||ctx.decodeAudioData(data))
 	 .then(buffer => notes[note].buffer = buffer)
 	);
 
@@ -201,8 +201,14 @@ const timeline = $timeline[0];
 //console.log($timeline);
 function setTime(time) {
 	if (!isNaN(time)) timeline.value = Math.min(time, timeline.max);
+
 	const {min, max, value} = timeline;
-	//console.log(value)
+		
+	if (this == timeline) {
+		if (playing && +value + this.lastVal) $play.click().click();
+		this.lastVal = +value;
+	}
+
 	if (playing && value == max) {
 		$play.click();
 		if (track != gamma) return;
