@@ -189,7 +189,8 @@ path.hd-white {
 	transition-duration: .2s
 }
 .hd-drum2 g[data-petal] {
-	opacity: 0.001;
+	opacity: 0.01;
+	/* opacity: 0; */
 }
 
 .hd-drum g.hover, .hd-drum g.active {
