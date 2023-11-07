@@ -146,7 +146,7 @@ svg.hd-drum2 {
 	position: absolute;
 	left: 0;
 	top:0;
-	mix-blend-mode: color-dodge;
+	/* mix-blend-mode: color-dodge; */
 	filter: none;
 }
 
@@ -174,7 +174,7 @@ path.hd-white {
 }
 .hd-drum2 path {
 	filter: url(./#hd-glow);
-	stroke: #ffc;
+	stroke: #ffe;
 	stroke-width: 0.8px;
 }
 .hd-drum g[data-petal] {
@@ -189,8 +189,7 @@ path.hd-white {
 	transition-duration: .2s
 }
 .hd-drum2 g[data-petal] {
-	opacity: 0.01;
-	/* opacity: 0; */
+	opacity: 0;
 }
 
 .hd-drum g.hover, .hd-drum g.active {
