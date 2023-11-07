@@ -3,14 +3,18 @@
 
 :root {
 	font-size: 16px;
+	min-height: 100%;
 	height: 100%;
 }
 body {
+  box-sizing: border-box;
+  margin: 0;
   font-family: Wix Madefor Display, sans-serif;
   background: #fdf6f2;
-  margin: 35px min(47px, 4.3vw);
+  padding: 35px min(47px, 4.3vw);
   font-size: 120%;
-  margin-bottom: 10px;
+  padding-bottom: 10px;
+  min-height: 100%;
 }
 h1 {
     padding-top: 12px;
@@ -40,24 +44,29 @@ h1 {
 }
 @media screen and (max-width: 650px) {
 	body {
-		margin: 20px 10px;
+		padding: 20px 10px;
 		font-size: 100%;
 	}
 	h1 {
-	    margin: 2px 0 -2px;
+	    /* margin: auto 0; */
 	    font-size: 17.122px;
 	    font-style: normal;
 	    letter-spacing: -.086px;
 	    text-transform: uppercase;
+	    /* flex-grow: 1; */
+	    flex-shrink: 2;
 	}
 }
 @media screen and (max-width: 600px) {
 	body {
 		display: flex;
 		flex-direction: column;
-		min-height: -webkit-fill-available;
-		min-height: -moz-available;
-		min-height: stretch;
-		justify-content: space-between;
+	}
+
+	body:after {
+	     content: ''; 
+	}
+	.logo {
+		min-height: 50px;
 	}
 }
