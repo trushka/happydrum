@@ -54,7 +54,7 @@ function playBuffer(note, time, context=ctx) {
     })
 }
 
-async function saveRecord(track, name='tankdrum'){
+async function saveRecord(track, name='kosmosky'){
 
 	const silence = .1, bitRate =  48000,
 	 duration = track.reduce((dur, item)=>{
@@ -79,7 +79,9 @@ async function saveRecord(track, name='tankdrum'){
 		//playBuffer({buffer})
 		const data=buffer.getChannelData(0);
 
-		data.forEach((d, i)=>data[i]=Math.floor(d*32767))
+		const max=[...data].reduce((max, el)=>Math.max(max, Math.abs(el)), 0);
+		console.log(max);
+		data.forEach((d, i)=>data[i]=d*32766/max)//Math.floor())
 		var blob = new Blob([encoder.encodeBuffer(data), encoder.flush()], {type: 'audio/mp3'});
 		var href = window.URL.createObjectURL(blob);
 

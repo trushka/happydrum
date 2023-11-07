@@ -68,7 +68,7 @@ const $petals = $('[data-petal]').each((i, el) => {
 	loading.push(
 	 fetch(url(`notes/${note||'took'}.mp3`))
      .then(res => res.arrayBuffer())
-     .then(data => console.log(new DataView(data).getInt8())||ctx.decodeAudioData(data))
+     .then(data => ctx.decodeAudioData(data))
 	 .then(buffer => notes[note].buffer = buffer)
 	);
 

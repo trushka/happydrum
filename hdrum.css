@@ -140,7 +140,7 @@ dl.hd-notes {
 .hd-drum svg{
 	height: 100%;
 	width: 100%;
-	mix-blend-mode: hard-light;
+	mix-blend-mode: luminosity;
 }
 svg.hd-drum2 {
 	position: absolute;
@@ -163,14 +163,14 @@ svg.hd-drum2 {
 }
 .hd-drum path {
 	stroke: #000;
-	stroke-width: 1.15px;
+	stroke-width: 1.6px;
 }
 path.hd-white {
 	stroke: #fff;
 	opacity: 0.5;
-	transform: translateX(0.7px);
+	transform: translate(0.5px, 0.2px);
 	/* display: none; */
-	stroke-width: 2.3px;
+	stroke-width: 3.1px;
 }
 .hd-drum2 path {
 	filter: url(./#hd-glow);
