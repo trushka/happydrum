@@ -305,7 +305,8 @@ button.hd-tuk {
 	opacity: 0;
 }
 .hd-rec.hd-active {
-	animation: recording .9s alternate infinite ease-in-out;
+	/* animation: recording .9s alternate infinite ease-in-out; */
+	color: #F37B7B;
 }
 @keyframes recording {
 	100% {color: #F37B7B}
