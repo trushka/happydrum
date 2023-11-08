@@ -66,7 +66,7 @@ const $petals = $('[data-petal]').each((i, el) => {
 	notes[note] = {$petal, i};
 
 	loading.push(
-	 fetch(url(`notes/${note||'took'}.mp3`))
+	 fetch(url(`notes/${note||'tuk'}.mp3`))
      .then(res => res.arrayBuffer())
      .then(data => ctx.decodeAudioData(data))
 	 .then(buffer => notes[note].buffer = buffer)
@@ -127,9 +127,8 @@ const $rec = $('.hd-rec').on('click', e=>{
 
 	if (recording) {
 
-		//$player.removeClass('hd-active');
-
 		recId = 'hd_record_melody' + tracksCount;
+		trackId = '';
 
 		localStorage[recId] = ''
 
@@ -150,6 +149,7 @@ const $play = $('.hd-play').on('click', e=>{
 	$play.toggleClass('hd-active');
 
 	if (playing) {
+		if (track==gamma) $gamma.addClass('active');
 
 		trackTimers=[];
 
@@ -171,14 +171,15 @@ const $play = $('.hd-play').on('click', e=>{
 
 			if (length==1) $play.click()
 		})
-	} else trackTimers.forEach(timer=>{
+	} else {
+		trackTimers.forEach(timer=>clearTimeout(timer))
+		if (track == gamma && trackId) setTrack();
 		$gamma.removeClass('active');
-
-		clearTimeout(timer);
-	})
+	}
+	
 })
 
-function setTrack(id = localStorage.lastTrack) {
+function setTrack(id = trackId) {
 
 	if (!id) return;
 
@@ -193,7 +194,7 @@ function setTrack(id = localStorage.lastTrack) {
 
 	timeline.max = +(/\d+$/.exec(track.at(-1)))+100
 	setTime(0);
-	$player.addClass('hd-active')
+	if (track != gamma || $player.is('.hd-visible')) $('.hd-bottom>*').toggleClass('hd-visible');
 }
 
 const $player = $('.hd-player');
@@ -214,22 +215,25 @@ function setTime(time) {
 
 	if (playing && value == max) {
 		$play.click();
-		if (track != gamma) return;
-
-		$player.removeClass('hd-active');
-		setTrack();
+		if (track == gamma) setTrack();
 	}
 	timeline.parentNode.style.setProperty('--progress', (value - min)/(max - min)*100 + '%')
 }
 
-setTrack();
-
 const $gamma = $('.hd-gamma').click(function(e){
-	if (playing) $play.click();
-	setTrack(gamma)
-	$play.click()
-	if (playing) $gamma.addClass('active')
+	const isG = track==gamma; 
+	if (playing || isG) $play.click();
+	if (isG) return;
+	setTrack(gamma);
+	$play.click();
 })
+
+$('.hd-close').click(e=>{
+	trackId = '';
+	$('.hd-bottom>*').toggleClass('hd-visible')
+})
+
+//setTrack();
 
 requestAnimationFrame(function fn(){
 	requestAnimationFrame(fn);
@@ -239,7 +243,7 @@ requestAnimationFrame(function fn(){
 	setTime(ctx.currentTime*1000 - start);
 })
 
-const $share = $('.hd-share').click(e=>saveRecord(track, localStorage.lastTrack.replace('hd_record_', '')))
+const $share = $('.hd-share').click(e=>saveRecord(track))
 
 $win.on('blur', e=>{
 	if (recording) $rec.click()

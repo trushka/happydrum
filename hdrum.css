@@ -132,22 +132,24 @@ dl.hd-notes {
 	    display: flex;
 	    flex-direction: column;
 	    justify-content: space-between;
-	    min-height: 83vh;
+	    /* min-height: 83vh; */
 	    width: 100%;
+	    flex-grow: 1.4;
 	}
 }
 
 .hd-drum svg{
 	height: 100%;
 	width: 100%;
-	mix-blend-mode: luminosity;
+	/* mix-blend-mode: luminosity; */
+	/* clip-path: circle(46%); */
 }
 svg.hd-drum2 {
 	position: absolute;
 	left: 0;
 	top:0;
-	/* mix-blend-mode: color-dodge; */
-	filter: none;
+	mix-blend-mode: normal;
+	/* filter: contrast(0.5); */
 }
 
 .hd-drum svg>g {
@@ -163,18 +165,18 @@ svg.hd-drum2 {
 }
 .hd-drum path {
 	stroke: #000;
-	stroke-width: 1.6px;
+	stroke-width: 1.5px;
 }
 path.hd-white {
 	stroke: #fff;
-	opacity: 0.5;
+	opacity: 0.6;
 	transform: translate(0.5px, 0.2px);
 	/* display: none; */
 	stroke-width: 3.1px;
 }
 .hd-drum2 path {
 	filter: url(./#hd-glow);
-	stroke: #ffe;
+	stroke: #fffff7;
 	stroke-width: 0.8px;
 }
 .hd-drum g[data-petal] {
@@ -189,7 +191,7 @@ path.hd-white {
 	transition-duration: .2s
 }
 .hd-drum2 g[data-petal] {
-	opacity: 0;
+	opacity: 0.003;
 }
 
 .hd-drum g.hover, .hd-drum g.active {
@@ -219,22 +221,23 @@ path.hd-white {
 .hd-player, .hd-list, .hd-controls>button {
 	border: 1px solid;
 	transition: .3s;
+	/* display: initial; */
 }
 .hd-gamma, .hd-play {
 	border: none !important;
 }
-.hd-controls>button:hover,
+.hd-controls>button:not(.hd-tuk):hover,
 .hd-player:hover,
 .hd-rec.hd-active, 
 .hd-list:hover, 
-.hd-took.hover,
+.hd-tuk.hover,
 .hd-gamma.active {
 	box-shadow: 3px 2px 18px 1px;
 }
-.hd-controls>button:active,
+.hd-controls>button:not(.hd-tuk):active,
 .hd-player:active, 
 .hd-list:active, 
-.hd-took.active {
+.hd-tuk.active {
 
 	box-shadow: 0 0 0 1px, 3px 2px 16px -1px;
 	transition: .2s cubic-bezier(0.35, 0.71, 0.11, 1);
@@ -247,8 +250,7 @@ path.hd-white {
 	margin: 0 1em;
 	/* padding-right: 16px; */
 }
-.hd-player:not(.hd-active),
-.hd-player:not(.hd-active) ~ button {
+.hd-bottom>*:not(.hd-visible) {
 	width: 0;
 	opacity: 0;
 	margin: 0;
@@ -285,14 +287,13 @@ path.hd-white {
 	margin: 0;
 	opacity: 0;
 }
-button.hd-took {
+button.hd-tuk {
 	width: 49px;
 	height: 49px;
 	align-items: center;
 	padding-bottom: 6px;
 	font-size: 21px;
 }
-
 
 .hd-rec-play svg>* {
 	transition: .3s;

@@ -74,27 +74,30 @@ async function saveRecord(track, name='kosmosky'){
 	})
 
 	offlineCtx.startRendering().then((buffer) => {
-		console.log(buffer);
-
 		//playBuffer({buffer})
-		const data=buffer.getChannelData(0);
+		let data=buffer.getChannelData(0);
 
-		const max=[...data].reduce((max, el)=>Math.max(max, Math.abs(el)), 0);
+		const max=data.reduce((max, el)=>Math.max(max, Math.abs(el)), 0);
 		console.log(max);
-		data.forEach((d, i)=>data[i]=d*32766/max)//Math.floor())
-		var blob = new Blob([encoder.encodeBuffer(data), encoder.flush()], {type: 'audio/mp3'});
-		var href = window.URL.createObjectURL(blob);
+		data.forEach((d, i)=>data[i]=d*32767/max);
 
-		jQuery('<a>').prop({href, download: name + '.mp3'})[0].click()
-		//window.open(url);
+		const chunks = [];
+		setTimeout (async function encode() {
+			if (data.length) {
+				setTimeout(encode);
+				chunks.push(encoder.encodeBuffer(data.subarray(0, 11520)))
+				data = data.subarray(11520)
+			} else {
+				chunks.push(encoder.flush())
 
-		// audioEncoder(buf, 128, function (e) {
-		// 	progress(e)
-		// }, function onComplete(blob) {
-		// 	progress(0)
-		// 	fileSaver.saveAs(blob, 'pantan.mp3')
-		// })
-	})
+				var blob = new Blob(chunks, {type: 'audio/mp3'});
+				var href = window.URL.createObjectURL(blob);
+
+				jQuery('<a>').prop({href, download: name + '.mp3'})[0].click()
+			}
+		})
+	});
+	console.log('start')
 }
 
 export {ctx, playBuffer, saveRecord, notes}
