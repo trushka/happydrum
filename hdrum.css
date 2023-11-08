@@ -235,7 +235,7 @@ path.hd-white {
 	box-shadow: 3px 2px 18px 1px;
 }
 .hd-controls>button:not(.hd-tuk):active,
-.hd-player:active, 
+.-hd-player:active, 
 .hd-list:active, 
 .hd-tuk.active {
 
