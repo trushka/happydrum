@@ -176,7 +176,7 @@ path.hd-white {
 }
 .hd-drum2 path {
 	filter: url(./#hd-glow);
-	stroke: #fffff7;
+	stroke: #fffffd;
 	stroke-width: 0.8px;
 }
 .hd-drum g[data-petal] {
@@ -220,14 +220,14 @@ path.hd-white {
 }
 .hd-player, .hd-list, .hd-controls>button {
 	border: 1px solid;
-	transition: .3s;
+	transition: .5s;
 	/* display: initial; */
 }
 .hd-gamma, .hd-play {
 	border: none !important;
 }
-.hd-controls>button:not(.hd-tuk):hover,
-.hd-player:hover,
+.hd-controls>button:not(.hd-tuk):not(.clicked):hover,
+.-hd-player:hover,
 .hd-rec.hd-active, 
 .hd-list:hover, 
 .hd-tuk.hover,

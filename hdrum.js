@@ -74,6 +74,8 @@ const $petals = $('[data-petal]').each((i, el) => {
 
 	$petal.on('pointerdown', function(e){
 
+		$('.hd-controls button').mouseleave();
+
 		play(note);
 
 		let lastNote = note;
@@ -221,12 +223,13 @@ function setTime(time) {
 }
 
 const $gamma = $('.hd-gamma').click(function(e){
+	$gamma.addClass('clicked');
 	const isG = track==gamma; 
 	if (playing || isG) $play.click();
 	if (isG) return;
 	setTrack(gamma);
 	$play.click();
-})
+}).on('mouseleave', e=>$gamma.removeClass('clicked'))
 
 $('.hd-close').click(e=>{
 	trackId = '';
