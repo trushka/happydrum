@@ -5,17 +5,17 @@ const notes=[];
 
 const ctx = new AudioContext();
 
-function addCompressor(ctx) {
+function addCompressor(ctx0) {
 
-	(ctx.limiter = new DynamicsCompressorNode(ctx, {
+	(ctx0.limiter = new DynamicsCompressorNode(ctx0, {
 		ratio: 17,
 		knee:8,
-		threshold: -16,
+		threshold: ctx==ctx0? -16 :-12,
 		//attack: 0,
 		release: .1,
 	}))
-	.connect(new GainNode(ctx, {gain: 1.65}))
-	.connect(ctx.destination);
+	.connect(new GainNode(ctx0, {gain: 1.65}))
+	.connect(ctx0.destination);
 }
 addCompressor(ctx);
 
@@ -31,7 +31,7 @@ function playBuffer(note, time, context=ctx) {
     const gain = new GainNode(context, {gain: i==6?.25:.35});
     //gain.connect(context.destination);
 
-   if ('i' in note) source.connect(gain).connect(context.limiter);
+   if (i) source.connect(gain).connect(context.limiter);
    else source.connect(context.destination)
 
     if (note.source?.context == context) {
@@ -97,7 +97,7 @@ async function saveRecord(track, name='kosmosky'){
 			}
 		})
 	});
-	console.log('start')
+	console.log('1start')
 }
 
 export {ctx, playBuffer, saveRecord, notes}
