@@ -4,6 +4,9 @@
 	position: relative;
 	text-align: center;
 }
+#hdrum-vidget.hd-loading *{
+	pointer-events: none;
+}
 #hdrum-vidget svg{
 	display: block;
 }
@@ -109,7 +112,13 @@ dl.hd-notes {
 	/* height: 100em; */
 	margin: auto;
 	box-shadow: 4.2em 3em 9em -2em #0006, #fff 4px 1px 0 -2.6px inset, #000a inset -0.4px -0.2px 1px -0.2px, 0 0 3em #0001 inset;
-	background: url(images/pantam-800.webp) 100% 85%/100.25% 100.5%;
+	background: currentcolor url(images/pantam-400.webp) 100% 85%/100.25% 100.5%;
+	background-image: image-set(
+		url(images/pantam-400.avif) 1x type("image/avif"),
+		url(images/pantam-400.webp) 1x,
+		url(images/pantam-800.avif) 2x type("image/avif"),
+		url(images/pantam-800.webp) 2x
+	);
 	border-radius:50%;
 	/* overflow: hidden; */
 	pointer-events: none;
@@ -161,7 +170,7 @@ svg.hd-drum2 {
 	/* cursor: pointer; */
 	stroke: #0000;
 	stroke-width: 30px;
-	pointer-events: fill;
+	/* pointer-events: fill; */
 }
 .hd-drum path {
 	stroke: #000;
@@ -184,6 +193,9 @@ path.hd-white {
 	will-change: opacity;
 	/* filter: url(./#hd-dark); */
 }
+.hd-loading .hd-drum .hd-drum1 g[data-petal] {
+	opacity: 0.3;
+}
 .hd-drum g[data-petal].hover {
 	transition-duration: .7s
 }
@@ -192,6 +204,18 @@ path.hd-white {
 }
 .hd-drum2 g[data-petal] {
 	opacity: 0.003;
+	pointer-events: fill;
+}
+g[data-petal].hd-anim {
+	pointer-events: none;
+	--dur: 1.5s;
+	animation: var(--dur) loading linear infinite;
+	animation-delay: calc(var(--dur)*var(--delay));
+}
+@keyframes loading {
+	0% {animation-timing-function: cubic-bezier(0.5, 0.1, 0.4, 1);}
+	20% {opacity: 0.9;animation-timing-function: cubic-bezier(0.3, 0, 0, 0.7);}
+	50% {opacity: 0.5;animation-timing-function: cubic-bezier(0, 0, 0.5, 1);}
 }
 
 .hd-drum g.hover, .hd-drum g.active {

@@ -12,7 +12,7 @@ function url(url) {
 	return new URL(url, import.meta.url).href
 };
 
-const container=$('#hdrum-vidget')
+const container=$('#hdrum-vidget').addClass('hd-loading')
 
 if (!container.children()[0]) {
 	container.html(await $.get(url('hdrum.html')));
@@ -42,13 +42,14 @@ function record(note) {
 	localStorage[recId] += `${note}:${Math.round(t - startRec)}`;
 }
 
-$('.hd-drum>svg').clone().addClass('hd-drum2').appendTo('.hd-drum')
- .find('filter').remove();
+$('.hd-drum>svg').addClass('hd-drum1').clone().toggleClass('hd-drum1 hd-drum2')
+ .appendTo('.hd-drum').find('filter').remove();
 
 const loading = [];
 
 const keys = '0123456789QWERTY';
 $win.keydown(e=>{
+	if (container.is('.hd-loading')) return;
 	if (e.originalEvent.repeat) return;
 	play(keys.indexOf(e.code.at(-1)))
 })
@@ -65,8 +66,8 @@ const $petals = $('[data-petal]').each((i, el) => {
 
 	notes[note] = {$petal, i};
 
-	loading.push(
-	 fetch(url(`notes/${note||'tuk'}.mp3`))
+	loading.push(new Promise(resolve => setTimeout(resolve, 30)) //waiting for start loading images
+	 .then(()=>fetch(url(`notes/${note||'tuk'}.mp3`)))
      .then(res => res.arrayBuffer())
      .then(data => ctx.decodeAudioData(data))
 	 .then(buffer => notes[note].buffer = buffer)
@@ -112,7 +113,11 @@ $win.on('pointerup pointercancel blur', e=>{
 	$petals.off('pointermove')
 })
 
-Promise.all(loading).then(()=>console.log('all notes loaded'))
+Promise.allSettled(loading).then(()=>{
+	container.removeClass('hd-loading')
+	gAnim.fadeOut(900)
+})
+const gAnim = $('g', '<svg><g>').appendTo('.hd-drum2')
 
 let recording = 0, start, trackId, track, recId, playing, trackTimers = [];
 
@@ -258,6 +263,10 @@ $win.on('blur', e=>{
 	}).prependTo('.hd-drum')
 })
 '235791113141210864'.match(/1?./g).forEach((n, i)=>{
+	$(`.hd-drum2 [data-petal="${n}"]`).clone()
+	.addClass('hd-anim').css('--delay', i/13).appendTo(gAnim)
+	.on('animationiteration', e=>e.target.i++)[0].i = 1;
+
 	$(`<b class="hd-tag-n hd-n${i+2}">${n}</b>`)
 	.prependTo('.hd-drum')
 })
