@@ -161,8 +161,6 @@ dl.hd-notes {
 	/* filter: contrast(0.5); */
 }
 
-.hd-drum span>g {
-}
 .hd-drum rect {
 	fill: transparent;
 	touch-action: none;
@@ -188,27 +186,23 @@ path.hd-white {
 	stroke: #fffffd;
 	stroke-width: 0.8px;
 }
-.hd-drum svg[data-petal] {
-	/* transform: matrix(1.16, 0, 0, 1.16, -34, -30) rotate(45deg); */
-	/* overflow: visible; */
+.hd-drum [data-petal] {
 	transition: 1.4s opacity cubic-bezier(0.11, 0.01, 0.12, 0.88);
 	will-change: opacity;
-	/* filter: url(./#hd-dark); */
 }
-.hd-loading .hd-drum .hd-drum1 svg[data-petal] {
+.hd-loading .hd-drum .hd-drum1 [data-petal] {
 	opacity: 0.3;
 }
-.hd-drum svg[data-petal].hover {
+.hd-drum [data-petal].hover {
 	transition-duration: .7s
 }
-.hd-drum svg[data-petal].active {
+.hd-drum [data-petal].active {
 	transition-duration: .1s
 }
-.hd-drum2 svg[data-petal] {
+.hd-drum2 [data-petal] {
 	opacity: 0.005;
-	/* pointer-events: fill; */
 }
-svg[data-petal].hd-anim {
+[data-petal].hd-anim {
 	pointer-events: none;
 	--dur: 1.5s;
 	animation: var(--dur) loading linear infinite;
@@ -220,15 +214,14 @@ svg[data-petal].hd-anim {
 	50% {opacity: 0.5;animation-timing-function: cubic-bezier(0, 0, 0.5, 1);}
 }
 
-.hd-drum svg.hover, .hd-drum svg.active {
+.hd-drum1 span.hover, .hd-drum1 span.active {
 	opacity: 0;
 }
-.hd-drum2 svg.hover {
+.hd-drum2 [data-petal].hover {
 	opacity: 0.8;
 }
-.hd-drum2 svg.active {
+.hd-drum2 [data-petal].active {
 	opacity: 1;
-	transition: 0.1s opacity;
 }
 
 .hd-controls button {

@@ -57,9 +57,9 @@ $win.keydown(e=>{
 const $petals = $('[data-petal]').each((i, el) => {
 
 	if (!$(el).closest('.hd-drum2')[0])
-		$('path', el).clone().prependTo(el).addClass('hd-white');
+		$('path', el).clone().prependTo(el.firstChild).addClass('hd-white');
 
-	if (el.tagName=='svg') $(el).attr({
+	$('svg', el).attr({
 		width: 484, height: 484,
 		viewBox: "0 -5 484 495",
 		preserveAspectRatio: "none"
