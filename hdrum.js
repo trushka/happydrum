@@ -27,7 +27,7 @@ function play(note) {
 
 	$petal.addClass('active');
 	clearTimeout(timer);
-	notes[note].timer=setTimeout(()=>{$petal.removeClass('active')}, 350)
+	notes[note].timer=setTimeout(()=>{$petal.removeClass('active')}, 130)
 
 	if (recording) record(note)
 }
@@ -42,8 +42,8 @@ function record(note) {
 	localStorage[recId] += `${note}:${Math.round(t - startRec)}`;
 }
 
-$('.hd-drum>svg').addClass('hd-drum1').clone().toggleClass('hd-drum1 hd-drum2')
- .appendTo('.hd-drum').find('filter').remove();
+$('.hd-drum>span').addClass('hd-drum1').clone()
+ .toggleClass('hd-drum1 hd-drum2').appendTo('.hd-drum');
 
 const loading = [];
 
@@ -58,6 +58,12 @@ const $petals = $('[data-petal]').each((i, el) => {
 
 	if (!$(el).closest('.hd-drum2')[0])
 		$('path', el).clone().prependTo(el).addClass('hd-white');
+
+	if (el.tagName=='svg') $(el).attr({
+		width: 484, height: 484,
+		viewBox: "0 -5 484 495",
+		preserveAspectRatio: "none"
+	})
 
 	const note = +el.dataset.petal
 	if (notes[note]) return;
@@ -117,7 +123,8 @@ Promise.allSettled(loading).then(()=>{
 	container.removeClass('hd-loading')
 	gAnim.fadeOut(900)
 })
-const gAnim = $('g', '<svg><g>').appendTo('.hd-drum2')
+
+const gAnim = $('<span>').appendTo('.hd-drum2')
 
 let recording = 0, start, trackId, track, recId, playing, trackTimers = [];
 
